@@ -3,4 +3,4 @@ project(StateMachine)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(StateMachine src/main.cpp)
+add_executable(StateMachine src/main.cpp src/LightState.h src/TrafficLights.cpp src/TrafficLights.h)
