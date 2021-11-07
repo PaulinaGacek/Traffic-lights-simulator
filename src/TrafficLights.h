@@ -19,13 +19,13 @@ private:
             {LightState::yellow_red,LightState::red_green},
     };
     std::map<std::pair<LightState,LightState>,size_t> transitionTime = {
-            {{LightState::red_green,LightState::green_red},1000},
-            {{LightState::green_red,LightState::yellow_red},200},
+            {{LightState::red_green,LightState::green_red},10000},
+            {{LightState::green_red,LightState::yellow_red},20000},
             {{LightState::yellow_red,LightState::red_green},2000}
     };
     LightState currentState;
     bool isButtonPushed = false;
-    const unsigned int MAX_DELAY = 1; //in milliseconds
+    const unsigned int MAX_DELAY = 1000; //in milliseconds
     unsigned long timePassed = 0; // in milliseconds
 };
 

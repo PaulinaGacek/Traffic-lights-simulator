@@ -23,13 +23,13 @@ void TrafficLights::run() {
     std::cout <<"[ "<< timePassed<< " ] ";
     switch (currentState) {
         case LightState::green_red:
-            std::cout << "Cars: green, pedestrians: red\n";
+            std::cout << " <State 1> Cars: green, pedestrians: red\n";
             break;
         case LightState::yellow_red:
-            std::cout << "Cars: yellow, pedestrians: red\n";
+            std::cout << " <State 2> Cars: yellow, pedestrians: red\n";
             break;
         case LightState::red_green:
-            std::cout << "Cars: red, pedestrians: green\n";
+            std::cout << " <State 3> Cars: red, pedestrians: green\n";
             break;
         default:
             break;
@@ -39,9 +39,14 @@ void TrafficLights::run() {
 void TrafficLights::toggle() {
     LightState nextState = transitions[currentState];
     unsigned long timeToWait = transitionTime[{currentState,nextState}];
-    if(currentState==LightState::red_green || currentState==LightState::yellow_red){
+    if(currentState==LightState::red_green){
         std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
         timePassed += timeToWait;
+    }
+    else if(currentState==LightState::yellow_red){
+        std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
+        timePassed += timeToWait;
+        while(_kbhit()) _getch(); // clearing keyboard buffor
     }
     else if(currentState== LightState::green_red){
         unsigned long timePassedInLoop = 0;
@@ -54,6 +59,7 @@ void TrafficLights::toggle() {
             timePassedInLoop += MAX_DELAY;
         }
         timePassed += timePassedInLoop;
+        while(_kbhit()) _getch();
     }
     currentState = nextState;
 }
