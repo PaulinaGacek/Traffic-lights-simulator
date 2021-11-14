@@ -12,7 +12,6 @@ public:
 private:
     void displayState();
     void toggle();
-    void wait();
     std::map<LightState,LightState> transitions = {
             {LightState::red_green,LightState::green_red},
             {LightState::green_red,LightState::yellow_red},
@@ -26,7 +25,7 @@ private:
     LightState currentState;
     bool isButtonPushed = false;
     const unsigned int MAX_DELAY = 1000; //in milliseconds
-    unsigned long timePassed = 0; // in milliseconds
+    long long timePassed = 0; // in milliseconds
 };
 
 #endif //STATEMACHINE_TRAFFICLIGHTS_H

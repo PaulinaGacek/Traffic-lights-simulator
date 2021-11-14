@@ -37,14 +37,15 @@ void TrafficLights::run() {
 }
 
 void TrafficLights::toggle() {
+    auto start = std::chrono::high_resolution_clock::now();
     LightState nextState = transitions[currentState];
     unsigned long timeToWait = transitionTime[{currentState,nextState}];
     if(currentState==LightState::red_green){
-        std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
+        std::this_thread::sleep_until(start+std::chrono::milliseconds(timeToWait));
         timePassed += timeToWait;
     }
     else if(currentState==LightState::yellow_red){
-        std::this_thread::sleep_for(std::chrono::milliseconds(timeToWait));
+        std::this_thread::sleep_until(start+std::chrono::milliseconds(timeToWait));
         timePassed += timeToWait;
         while(_kbhit()) _getch(); // clearing keyboard buffor
     }
@@ -55,8 +56,8 @@ void TrafficLights::toggle() {
                 isButtonPushed = false;
                 break;
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(MAX_DELAY));
             timePassedInLoop += MAX_DELAY;
+            std::this_thread::sleep_until(start+std::chrono::milliseconds(MAX_DELAY*i));
         }
         timePassed += timePassedInLoop;
         while(_kbhit()) _getch();
