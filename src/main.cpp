@@ -1,4 +1,3 @@
-#include <iostream>
 #include "TrafficLights.h"
 
 int main() {

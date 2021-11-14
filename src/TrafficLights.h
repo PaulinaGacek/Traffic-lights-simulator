@@ -12,6 +12,8 @@ public:
 private:
     void displayState();
     void toggle();
+    inline void clearBuffer();
+
     std::map<LightState,LightState> transitions = {
             {LightState::red_green,LightState::green_red},
             {LightState::green_red,LightState::yellow_red},
@@ -24,6 +26,7 @@ private:
     };
     LightState currentState;
     bool isButtonPushed = false;
+    bool isForcedToStop = false;
     const unsigned int MAX_DELAY = 1000; //in milliseconds
     long long timePassed = 0; // in milliseconds
 };

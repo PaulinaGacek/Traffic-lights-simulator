@@ -7,15 +7,15 @@ TrafficLights::TrafficLights(LightState state) {
 }
 
 void TrafficLights::run() {
-    std::cout << "Press enter to run the traffic lights";
-    char c = _getch();
+    std::cout << "Press enter to run the traffic lights\n";
+    if(_getch()=='e')
+        return;
     while(true){
-        if(_kbhit() && _getch()=='e')
-            break;
-        if(_kbhit())
-            isButtonPushed = true;
         displayState();
         toggle();
+        if(isForcedToStop){
+            break;
+        }
     }
 }
 
@@ -43,11 +43,8 @@ void TrafficLights::toggle() {
     if(currentState==LightState::red_green){
         std::this_thread::sleep_until(start+std::chrono::milliseconds(timeToWait));
         timePassed += timeToWait;
-    }
-    else if(currentState==LightState::yellow_red){
-        std::this_thread::sleep_until(start+std::chrono::milliseconds(timeToWait));
-        timePassed += timeToWait;
-        while(_kbhit()) _getch(); // clearing keyboard buffor
+        clearBuffer();
+        isButtonPushed = false;
     }
     else if(currentState== LightState::green_red){
         unsigned long timePassedInLoop = 0;
@@ -60,7 +57,23 @@ void TrafficLights::toggle() {
             std::this_thread::sleep_until(start+std::chrono::milliseconds(MAX_DELAY*i));
         }
         timePassed += timePassedInLoop;
-        while(_kbhit()) _getch();
+        clearBuffer();
+        isButtonPushed = false;
+    }
+    else if(currentState==LightState::yellow_red){
+        std::this_thread::sleep_until(start+std::chrono::milliseconds(timeToWait));
+        timePassed += timeToWait;
+        clearBuffer();
+        isButtonPushed = false;
     }
     currentState = nextState;
+}
+
+void TrafficLights::clearBuffer() {
+    while(_kbhit()) {
+        if(_getch()=='e'){
+            isForcedToStop = true;
+            break;
+        }
+    }
 }
