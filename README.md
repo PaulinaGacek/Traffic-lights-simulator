@@ -13,5 +13,6 @@ Possible transitions:
 - <State 3> :arrow_right: <State 1> after 2 seconds
 
 
-:warning: *button pushed during period when pedestrians have green light does not count
-    pushing button is simulated by not empty input from keyboard*
+:warning: *button pushed during period when pedestrians have green light does not count*
+    
+*pushing button is simulated by not empty input from keyboard*
